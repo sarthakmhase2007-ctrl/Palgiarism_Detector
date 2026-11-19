@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Originality Lab compares text documents using classical discrete mathematics: Jaccard, 3-grams, cosine, LCS, and graph clustering." />
+  <meta name="theme-color" content="#0d1224" />
+  <title>Originality Lab — Document Similarity Studio</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <a class="brand" href="/" aria-label="Originality Lab Home"><span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="4" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="3"/><rect x="11" y="11" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="3"/></svg></span><span><strong>originality<span class="brand-dot">.</span></strong><small>LAB / V1.0</small></span></a>
+      <div class="side-caption">WORKSPACE</div>
+      <nav class="side-nav">
+        <a class="nav-link active" href="#workspace" id="nav-workspace"><span class="nav-icon">▦</span> Overview <span class="nav-indicator"></span></a>
+        <a class="nav-link" href="#results" id="nav-results"><span class="nav-icon">◈</span> Analysis results</a>
+        <a class="nav-link" href="#methodology"><span class="nav-icon">⊞</span> Methodology</a>
+      </nav>
+      <div class="side-bottom">
+        <div class="privacy-note"><span class="privacy-icon">✳</span><strong>Privacy, by design.</strong><p>Your files are processed in memory, not stored in a database.</p></div>
+        <a class="github-link" href="https://github.com/raaj-2222/Palgiarism_Detector" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .8A11.2 11.2 0 0 0 8.46 22.6c.56.1.77-.24.77-.54v-2.07c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.68.08-.68 1.13.08 1.72 1.16 1.72 1.16 1 .1.96 2.35 3.27 1.67.1-.73.39-1.23.71-1.52-2.5-.28-5.13-1.25-5.13-5.55 0-1.23.44-2.23 1.16-3.02-.12-.29-.5-1.43.1-2.98 0 0 .95-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.13-1.44 3.07-1.15 3.07-1.15.6 1.55.23 2.69.12 2.98.73.8 1.15 1.8 1.15 3.02 0 4.31-2.63 5.27-5.14 5.55.4.35.75 1.04.75 2.1v3.12c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg> View source <span>↗</span></a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar"><div class="breadcrumb">WORKSPACE <span>/</span> <strong>Document analysis</strong></div><div class="top-actions"><span class="server-status"><span class="status-dot"></span> Engine online</span><span class="top-version">v1.0</span></div></header>
+      <div class="content" id="workspace">
+        <div class="page-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR ANALYSIS STUDIO</div><h1>Find the <em>overlap.</em><br />Keep the original.</h1><p>Understand how closely your documents match, with transparent, mathematics-powered comparisons.</p></div><div class="heading-decor" aria-hidden="true"><svg viewBox="0 0 204 164"><circle cx="81" cy="82" r="56" fill="none" stroke="#8176ff" stroke-width="17" opacity=".82"/><circle cx="126" cy="82" r="56" fill="none" stroke="#50c7d6" stroke-width="17" opacity=".65"/><circle cx="103" cy="82" r="9" fill="#fff" opacity=".95"/><path d="M20 22l12 0M26 16v12M175 131l12 0M181 125v12" stroke="#d4d0ff" stroke-width="2"/></svg></div></div>
+
+        <section class="workspace-grid" aria-labelledby="start-title">
+          <div class="panel upload-panel">
+            <div class="panel-header"><div><div class="micro-label">01 / INPUT</div><h2 id="start-title">Your documents</h2><p>Drop in .txt files or paste your text to get started.</p></div><div class="doc-count" id="doc-count">0 / 8</div></div>
+            <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose text files or drop them here"><div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><strong>Drop your documents here</strong><span>or <span class="choose-inline">browse files</span> from your device</span><small>TXT only · up to 8 documents · 850 words each</small><input type="file" id="file-picker" accept=".txt,text/plain" multiple hidden /></div>
+            <div class="upload-separator"><span>OR ADD MANUALLY</span></div>
+            <div class="input-actions"><button class="secondary-button" id="paste-button" type="button"><span class="button-icon">＋</span> Paste text</button><button class="secondary-button" id="demo-button" type="button"><span class="button-icon">✧</span> Load example</button></div>
+            <div class="documents" id="documents" aria-live="polite"><div class="empty-documents"><span>◎</span> Your added documents will appear here.</div></div>
+            <p class="inline-error" id="input-error" role="alert" hidden></p>
+          </div>
+          <div class="right-stack">
+            <section class="panel settings-panel" aria-labelledby="settings-title"><div class="micro-label">02 / CONFIGURATION</div><h2 id="settings-title">Analysis settings</h2><p class="settings-description">Control how closely documents must match to form a cluster.</p><div class="threshold-header"><span>Similarity threshold</span><strong id="threshold-value">50%</strong></div><input type="range" id="threshold" min="0" max="100" step="5" value="50" aria-label="Similarity threshold" /><div class="threshold-legend"><span>More inclusive</span><span>More strict</span></div><div class="settings-foot"><span class="check-icon">✓</span> Original algorithm weights preserved</div></section>
+            <section class="run-card"><div class="run-graphic" aria-hidden="true"><span>∿</span><span>◌</span><span>∿</span></div><div class="micro-label">03 / PROCESS</div><h2>Ready to compare?</h2><p>We'll run six similarity metrics and build a graph of related documents.</p><button class="primary-button" id="analyze-button" type="button" disabled><span id="analyze-label">Run analysis</span><span id="analyze-arrow">↗</span></button><small id="run-hint">Add at least 2 documents to begin</small></section>
+          </div>
+        </section>
+
+        <section class="results-section" id="results" aria-labelledby="results-title" hidden>
+          <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR FINDINGS</div><h2 id="results-title">Analysis <em>results.</em></h2><p>Scores indicate text similarity, not proof of misconduct.</p></div><button class="subtle-button" type="button" id="rerun-button">↻ Re-run</button></div>
+          <div class="stats-grid" id="stats-grid"></div>
+          <div class="results-main-grid">
+            <div class="panel result-panel"><div class="panel-header"><div><div class="micro-label">04 / COMPARISONS</div><h3>Document pairs</h3></div><span class="header-pill" id="pair-count">0 comparisons</span></div><div class="pair-list" id="pair-list"></div></div>
+            <div class="panel result-panel detail-panel"><div class="panel-header"><div><div class="micro-label">05 / CLOSE-UP</div><h3>Pair breakdown</h3></div><span class="header-pill" id="selected-verdict">—</span></div><div id="pair-detail"></div></div>
+          </div>
+          <div class="results-main-grid bottom-grid">
+            <div class="panel result-panel"><div class="panel-header"><div><div class="micro-label">06 / RELATIONSHIPS</div><h3>Similarity network</h3></div><span class="header-pill">BFS clustering</span></div><p class="panel-explainer">Lines connect documents meeting your threshold. Colors distinguish connected groups.</p><div id="graph-viz" class="graph-viz"></div><div class="cluster-list" id="cluster-list"></div></div>
+            <div class="panel result-panel"><div class="panel-header"><div><div class="micro-label">07 / ALL SCORES</div><h3>Similarity matrix</h3></div><span class="header-pill">0–100%</span></div><p class="panel-explainer">Each cell shows the weighted similarity score for a document pair.</p><div class="matrix-container" id="matrix-container"></div><div class="matrix-legend"><span class="legend-swatch"></span> Higher percentage = more shared content</div></div>
+          </div>
+        </section>
+
+        <section class="methodology-section" id="methodology" aria-labelledby="methodology-title"><div class="section-heading slim"><div><div class="eyebrow"><span class="eyebrow-line"></span> UNDER THE HOOD</div><h2 id="methodology-title">Math, not <em>magic.</em></h2><p>Every score comes from explainable algorithms in the original repository.</p></div></div><div class="method-cards"><article class="method-card"><span class="method-symbol">∩</span><span class="method-index">01</span><h3>Set similarity</h3><p>Jaccard, Dice and overlap compare shared unique keywords.</p></article><article class="method-card"><span class="method-symbol">≋</span><span class="method-index">02</span><h3>Sequence matching</h3><p>3-grams and dynamic-programming LCS capture word order.</p></article><article class="method-card"><span class="method-symbol">∠</span><span class="method-index">03</span><h3>Cosine similarity</h3><p>Word-frequency vectors reveal vocabulary overlap.</p></article><article class="method-card"><span class="method-symbol">⤳</span><span class="method-index">04</span><h3>Graph clustering</h3><p>BFS finds connected groups of similar documents.</p></article></div><div class="formula-strip"><div><span class="micro-label">THE ORIGINAL FORMULA</span><strong>Final = 0.20 × Jaccard + 0.25 × 3-gram + 0.15 × Cosine + 0.40 × LCS</strong></div><span class="formula-badge">100% transparent</span></div></section>
+        <footer class="footer"><span>© 2026 Originality Lab · Built on Discrete Mathematics</span><span>Compare responsibly. Similarity ≠ plagiarism.</span></footer>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="paste-modal" hidden><div class="modal" role="dialog" aria-modal="true" aria-labelledby="paste-title"><div class="modal-head"><div><div class="micro-label">NEW DOCUMENT</div><h2 id="paste-title">Paste your text</h2></div><button class="icon-button" id="close-modal" type="button" aria-label="Close dialog">✕</button></div><label for="paste-name">Document name</label><input type="text" id="paste-name" placeholder="e.g. essay-draft.txt" maxlength="120" /><label for="paste-content">Content</label><textarea id="paste-content" rows="9" placeholder="Paste your document here..."></textarea><p class="inline-error" id="paste-error" role="alert" hidden></p><div class="modal-actions"><button class="secondary-button" id="cancel-modal" type="button">Cancel</button><button class="primary-button" id="save-paste" type="button">Add document <span>↗</span></button></div></div></div>
+  <div class="toast" id="toast" aria-live="polite" hidden></div>
+</body>
+</html>
