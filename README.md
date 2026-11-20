@@ -1,15 +1,32 @@
 # Plagiarism & Document Similarity Detector (Discrete Mathematics Mini Project)
 
-Install:  `pip install matplotlib`   (numpy comes with it)
+## Margin web app
 
-Run:
-  python main.py                      -> report, saves 4 charts, charts pop up after 5 s
-  python main.py --delay 3            -> pop up after 3 s
-  python main.py --no-show            -> only save the PNGs (output/)
-  python main.py --files a.txt b.txt  -> compare two documents
-  python main.py --folder my_docs --threshold 0.4
+Margin runs the project's Python detector in a browser worker. Paste text or import two to eight UTF-8 `.txt` files, with up to 1,500 words per document. **Load example** compares the two Mumbai monsoon samples. Their weighted similarity is **76.46%**.
 
-If sample_docs/ is missing or empty, main.py creates 6 demo documents automatically.
+The report shows all six metrics, matching sentences, the longest shared phrase, keyword overlap, a pairwise matrix and document clusters. Adjust the link threshold in **Collection** to explore different groups. Document contents stay in the browser.
+
+### Deploy on Vercel
+
+Import this repository from GitHub. Use the repository root (`./`) and the **Other** framework preset. The checked-in `vercel.json` sets the build command to `npm run build` and the output directory to `dist`. The app serves its Python runtime and fonts from the same deployment.
+
+### Run locally
+
+With Node.js, npm and Python 3.9+ installed, run:
+
+```sh
+npm ci
+npm run build
+python3 -m http.server 8000 --directory dist
+```
+
+Open `http://localhost:8000`. For the parity checks, install the desktop program's plotting dependency with `python3 -m pip install matplotlib`, then run `npm test` after building.
+
+The build copies the original preprocessing, set similarity and LCS modules, and extracts the original scoring and graph definitions. The browser executes those definitions through Pyodide. The web adapter formats their return values for the interface.
+
+## Desktop program
+
+Install `matplotlib`, then run `python main.py` to analyze the text files in `sample_docs/`, print the report and save the four charts in `output/`. The folder, threshold and chart display settings are near the top of `main.py`. If the folder has fewer than two text files, the desktop program writes its three built-in samples.
 
 | Member | File | Discrete Maths concepts |
 |---|---|---|

@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f7f4" />
+    <meta
+      name="description"
+      content="Compare documents in your browser with Margin. Explore shared passages, word order, keyword overlap and document clusters."
+    />
+    <title>Margin — Document Similarity Lab</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link
+      rel="preload"
+      href="./fonts/dm-sans-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="./fonts/instrument-serif-latin-400-italic.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <a href="#workspace" class="skip">Skip to comparison desk</a>
+    <header class="mast">
+      <div class="wrap mast-inner">
+        <a class="brand" href="#top" aria-label="Margin home"
+          ><img src="./favicon.svg" alt="" width="36" height="36" /><span
+            >Margin</span
+          ></a
+        >
+        <nav aria-label="Main menu">
+          <a class="nav-desk" href="#workspace">Workspace</a>
+          <button class="nav-method" id="method-open" type="button">
+            How it works
+          </button>
+          <a
+            class="repo-link"
+            href="https://github.com/raaj-2222/Palgiarism_Detector"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Source code on GitHub (opens in a new tab)"
+            ><i data-icon="github"></i><span>GitHub</span></a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="top" class="wrap">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow hero-eyebrow">
+            <span class="short-rule"></span>Document similarity lab
+          </div>
+          <h1 id="hero-title">Find the <em>overlap.</em></h1>
+          <p>
+            Compare documents side by side. See the words, phrases and sentence
+            patterns they share.
+          </p>
+          <button type="button" class="hero-method" id="hero-method">
+            <i data-icon="layers"></i>Explore the scoring method
+          </button>
+        </div>
+        <div
+          class="illustration"
+          role="img"
+          aria-label="Two sample documents with the same passage highlighted."
+        >
+          <div class="grid-paper"></div>
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <span class="register reg-one"></span
+          ><span class="register reg-two"></span
+          ><span class="register reg-three"></span>
+          <div class="sheet sheet-back">
+            <div class="sheet-id"><span></span>DOC B</div>
+            <div class="typeset">
+              <b></b><b></b><mark>Local trains often get delayed</mark><b></b
+              ><b></b>
+            </div>
+          </div>
+          <div class="sheet sheet-front">
+            <div class="sheet-id"><span></span>DOC A</div>
+            <div class="typeset">
+              <b></b><mark>Local trains often get delayed</mark><b></b><b></b
+              ><b></b>
+            </div>
+          </div>
+          <div class="match-stamp" aria-hidden="true">
+            <i data-icon="link"></i>Matched passage
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace" id="workspace" aria-labelledby="desk-heading">
+        <div class="section-heading">
+          <div>
+            <h2 id="desk-heading" tabindex="-1">
+              Comparison desk<span class="accent-dot">.</span>
+            </h2>
+            <p>
+              Paste text or import <span class="filetype">.txt</span> files, up
+              to <span id="word-limit">1,500</span> words per document.
+            </p>
+          </div>
+          <button id="sample" type="button" class="button secondary">
+            <i data-icon="flask"></i>Load example
+          </button>
+        </div>
+        <form id="compare-form" novalidate>
+          <div id="editors" class="editors"></div>
+          <div class="workspace-actions">
+            <div class="add-group">
+              <button type="button" class="add-doc" id="add">
+                <i data-icon="plus"></i>Add document</button
+              ><span class="doc-count" id="doc-count"></span>
+            </div>
+            <button id="run" type="submit" class="button primary">
+              <i data-icon="scan"></i><span>Compare documents</span>
+            </button>
+          </div>
+          <div
+            id="feedback"
+            class="feedback"
+            role="status"
+            aria-live="polite"
+            hidden
+          ></div>
+        </form>
+        <div class="privacy">
+          <i data-icon="lock"></i> Your text stays in this browser.
+        </div>
+        <noscript
+          ><p>
+            Enable JavaScript to open the comparison desk and run the detector.
+          </p></noscript
+        >
+      </section>
+
+      <section id="report" class="report" hidden aria-labelledby="report-title">
+        <div class="section-heading result-heading">
+          <div>
+            <div class="eyebrow section-kicker">
+              <span class="short-rule"></span>Analysis results
+            </div>
+            <h2 id="report-title" tabindex="-1">
+              Similarity report<span class="accent-dot">.</span>
+            </h2>
+            <p id="report-meta"></p>
+          </div>
+          <div class="pair-chooser" id="pair-chooser">
+            <label for="pair">Document pair</label
+            ><select id="pair"></select>
+          </div>
+        </div>
+        <div class="result-nav" aria-label="Report views">
+          <button data-view="overview" aria-pressed="true" type="button">
+            <i data-icon="bars"></i>Overview
+          </button>
+          <button data-view="passages" aria-pressed="false" type="button">
+            <i data-icon="quote"></i>Passages
+          </button>
+          <button data-view="collection" aria-pressed="false" type="button">
+            <i data-icon="network"></i>Collection
+          </button>
+        </div>
+        <div id="overview" class="view">
+          <div class="overview-grid">
+            <article class="score-panel">
+              <div class="eyebrow">Weighted similarity</div>
+              <div class="score-value" id="score-value"></div>
+              <p id="pair-title" class="pair-title"></p>
+              <div id="verdict" class="verdict"></div>
+            </article>
+            <article class="panel metrics-panel">
+              <h3>Metric breakdown</h3>
+              <div id="metrics" class="metrics"></div>
+            </article>
+          </div>
+          <article class="panel keyword-panel">
+            <div>
+              <h3>Keyword overlap</h3>
+              <p>Distinct keywords across the selected pair.</p>
+            </div>
+            <div
+              id="keyword-diagram"
+              class="keyword-diagram"
+              aria-hidden="true"
+            >
+              <span></span><span></span>
+            </div>
+            <div
+              id="keyword-counts"
+              class="keyword-counts"
+              aria-live="polite"
+            ></div>
+          </article>
+        </div>
+        <div id="passages" class="view" hidden>
+          <article class="panel phrase-panel">
+            <div class="eyebrow">
+              <i data-icon="quote"></i>Longest shared phrase
+            </div>
+            <p id="phrase"></p>
+          </article>
+          <article class="panel">
+            <h3>Matching sentences</h3>
+            <p>
+              Each sentence in the first document is paired with its closest
+              match at 70% or higher.
+            </p>
+            <div id="sentence-matches" class="sentence-matches"></div>
+          </article>
+          <article class="panel">
+            <h3>Words outside the alignment</h3>
+            <p>These tokens fall outside the longest common subsequence.</p>
+            <div id="changed" class="changed"></div>
+          </article>
+        </div>
+        <div id="collection" class="view" hidden>
+          <div class="collection-grid">
+            <article class="panel">
+              <h3>Document connections</h3>
+              <div class="threshold">
+                <label for="threshold">Link threshold</label
+                ><strong id="threshold-value">50%</strong
+                ><input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  id="threshold"
+                  value="50"
+                  aria-describedby="threshold-help"
+                />
+              </div>
+              <p id="threshold-help">
+                Pairs at or above this score share a link.
+              </p>
+              <div id="graph" class="graph"></div>
+              <div id="groups" class="groups"></div>
+            </article>
+            <article class="panel matrix-panel">
+              <h3>Similarity matrix</h3>
+              <p>Weighted scores for every document pair.</p>
+              <div class="matrix-scroll" id="matrix"></div>
+              <div id="matrix-key" class="matrix-key"></div>
+            </article>
+          </div>
+        </div>
+        <p id="report-status" class="sr-only" role="status"></p>
+      </section>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span class="footer-brand"
+          ><img src="./favicon.svg" width="23" height="23" alt="" />Margin</span
+        ><span>Document similarity lab</span>
+      </div>
+    </footer>
+
+    <dialog id="method-dialog" aria-labelledby="method-title">
+      <div class="dialog-inner">
+        <button
+          id="method-close"
+          type="button"
+          class="icon-button dialog-close"
+          aria-label="Close scoring method"
+        >
+          <i data-icon="x"></i>
+        </button>
+        <div class="eyebrow section-kicker">
+          <span class="short-rule"></span>Scoring method
+        </div>
+        <h2 id="method-title">
+          How Margin compares text<span class="accent-dot">.</span>
+        </h2>
+        <p>
+          The detector lowercases text and separates it into words. It compares
+          English letters and digits, and removes common words when measuring
+          keywords.
+        </p>
+        <h3>Inside the weighted score</h3>
+        <div id="method-weights" class="method-weights"></div>
+        <p>
+          Dice and overlap are also reported. The graph starts at the project’s
+          50% link threshold. The report compares only the documents you supply.
+        </p>
+        <button id="method-done" type="button" class="button dark-button">
+          Back to workspace
+        </button>
+      </div>
+    </dialog>
+    <dialog id="replace-dialog" aria-labelledby="replace-title">
+      <div class="dialog-inner">
+        <h2 id="replace-title">Load the example documents?</h2>
+        <p>
+          This replaces your current inputs with two sample texts about the
+          Mumbai monsoon.
+        </p>
+        <div class="dialog-actions">
+          <button type="button" id="keep" class="button secondary">
+            Keep my text</button
+          ><button type="button" id="replace" class="button primary">
+            Load example
+          </button>
+        </div>
+      </div>
+    </dialog>
+    <template id="editor-template">
+      <article class="editor">
+        <div class="editor-header">
+          <div class="editor-id">
+            <span class="badge"></span><label></label>
+          </div>
+          <div class="editor-tools">
+            <button class="import" type="button">
+              <i data-icon="upload"></i><span>Import .txt</span></button
+            ><input
+              class="file-input"
+              type="file"
+              accept=".txt,text/plain"
+              hidden
+            /><button class="icon-button remove" type="button" hidden>
+              <i data-icon="x"></i>
+            </button>
+          </div>
+        </div>
+        <textarea spellcheck="false"></textarea>
+        <div class="editor-footer">
+          <span class="source-name"></span><span class="word-count"></span>
+        </div>
+        <p class="field-error" hidden></p>
+      </article>
+    </template>
+  </body>
+</html>
